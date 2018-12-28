@@ -14,4 +14,6 @@ The image based on mysql:8 and tomcat:9-jre11 with using docker-composer. the My
 
     docker-compose up
 
+## Test
+
 URL: http://localhost:8080/cbioportal/
