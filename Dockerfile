@@ -78,4 +78,4 @@ RUN patch $CATALINA_HOME/conf/server.xml </root/catalina_server.xml.patch
 RUN find $PORTAL_HOME/core/src/main/scripts/ -type f -executable \! -name '*.pl'  -print0 | xargs -0 -- ln -st /usr/local/bin
 # Migrate DB
 COPY migrate_db.sh /root
-ENTRYPOINT ["/bin/bash", "-c", "/root/migrate_db.sh"]
+#ENTRYPOINT ["/bin/bash", "-c", "/root/migrate_db.sh"]
