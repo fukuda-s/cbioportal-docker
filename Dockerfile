@@ -25,9 +25,14 @@ RUN apt-get update && \
       patch \
    		openjdk-8-jdk \
 		  python3 \
+      python3-dev \
+      python3-pip \
+      default-libmysqlclient-dev \
 		  python3-jinja2 \
 		  python3-mysqldb \
 		  python3-requests
+
+RUN python3 -m pip install mysqlclient
 
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 
@@ -71,4 +76,6 @@ RUN patch $CATALINA_HOME/conf/server.xml </root/catalina_server.xml.patch
 
 # Add importer scripts to PATH for easy running in containers
 RUN find $PORTAL_HOME/core/src/main/scripts/ -type f -executable \! -name '*.pl'  -print0 | xargs -0 -- ln -st /usr/local/bin
-
+# Migrate DB
+COPY migrate_db.sh /root
+ENTRYPOINT ["/bin/bash", "-c", "/root/migrate_db.sh"]

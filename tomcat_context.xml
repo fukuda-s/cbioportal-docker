@@ -30,66 +30,10 @@
     <!--
     <Valve className="org.apache.catalina.valves.CometConnectionManagerValve" />
     -->
-  <!--
   <Resource name="jdbc/cbioportal" auth="Container" type="javax.sql.DataSource"
     maxActive="100" maxIdle="30" maxWait="10000"
-    username="cbio_user" password="cbio123" driverClassName="com.mysql.jdbc.Driver"
+    username="cbio_user" password="cbio123" driverClassName="com.mysql.cj.jdbc.Driver"
     connectionProperties="zeroDateTimeBehavior=convertToNull;"
     url="jdbc:mysql://cbio-DB:3306/cbioportal"/>
-  -->
- <Resource name="jdbc/MySQLDB"
-               auth="Container"
-               type="javax.sql.DataSource"/>
-  <ResourceParams name="jdbc/MySQLDB">
-    <parameter>
-      <name>factory</name>
-      <value>org.apache.commons.dbcp.BasicDataSourceFactory</value>
-    </parameter>
-    <parameter>
-      <name>maxActive</name>
-      <value>10</value>
-    </parameter>
-    <parameter>
-      <name>maxIdle</name>
-      <value>5</value>
-    </parameter>
-    <parameter>
-      <name>validationQuery</name>
-      <value>SELECT 1</value>
-    </parameter>
-    <parameter>
-      <name>testOnBorrow</name>
-      <value>true</value>
-    </parameter>
-    <parameter>
-      <name>testWhileIdle</name>
-      <value>true</value>
-    </parameter>
-    <parameter>
-      <name>timeBetweenEvictionRunsMillis</name>
-      <value>10000</value>
-    </parameter>
-    <parameter>
-      <name>minEvictableIdleTimeMillis</name>
-      <value>60000</value>
-    </parameter>
-    <parameter>
-     <name>username</name>
-     <value>cbio_user</value>
-    </parameter>
-    <parameter>
-     <name>password</name>
-     <value>cbio123</value>
-    </parameter>
-    <parameter>
-       <name>driverClassName</name>
-       <value>com.mysql.cj.jdbc.Driver</value>
-    </parameter>
-    <parameter>
-      <name>url</name>
-      <value>jdbc:mysql://cbio-DB:3306/cbioportal</value>
-    </parameter>
-  </ResourceParams>
-</Context>
 
 </Context>
