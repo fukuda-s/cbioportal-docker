@@ -32,7 +32,7 @@ RUN apt-get update && \
 		  python3-mysqldb \
 		  python3-requests
 
-RUN python3 -m pip install mysqlclient
+RUN python3 -m pip install setuptools mysqlclient pyyaml
 
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 
