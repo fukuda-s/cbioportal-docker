@@ -22,17 +22,18 @@ WORKDIR /root
 RUN apt-get update && \
 		apt-get install -y --no-install-recommends \
 			git \
-      patch \
-   		openjdk-8-jdk \
-		  python3 \
-      python3-dev \
-      python3-pip \
-      default-libmysqlclient-dev \
-		  python3-jinja2 \
-		  python3-mysqldb \
-		  python3-requests
+			patch \
+			openjdk-8-jdk \
+			python3 \
+			python3-dev \
+			python3-pip \
+			default-libmysqlclient-dev \
+			python3-jinja2 \
+			python3-mysqldb \
+			python3-requests
 
-RUN python3 -m pip install setuptools mysqlclient pyyaml
+RUN python3 -m pip install pip setuptools
+RUN python3 -m pip install mysqlclient pyyaml
 
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 
