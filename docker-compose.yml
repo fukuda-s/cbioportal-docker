@@ -8,8 +8,8 @@ services:
                if [ ! -f /root/initdb/00_cgds.sql ]; then
                  wget -O /root/initdb/00_cgds.sql https://raw.githubusercontent.com/cBioPortal/cbioportal/v1.18.1/db-scripts/src/main/resources/cgds.sql;
                fi &&
-               if [ ! -f /root/initdb/01_seed-cbioportal_hg19_v2.7.2.sql.gz ]; then
-                 wget -O /root/initdb/01_seed-cbioportal_hg19_v2.7.2.sql.gz https://github.com/cBioPortal/datahub/raw/master/seedDB/seed-cbioportal_hg19_v2.7.2.sql.gz;
+               if [ ! -f /root/initdb/01_seed-cbioportal_hg19_v2.7.3.sql.gz ]; then
+                 wget -O /root/initdb/01_seed-cbioportal_hg19_v2.7.3.sql.gz https://github.com/cBioPortal/datahub/raw/master/seedDB/seed-cbioportal_hg19_v2.7.3.sql.gz;
                fi"
     volumes:
       - "initdb:/root/initdb"
