@@ -21,6 +21,8 @@ WORKDIR /root
 #### Install git, patch, openjdk-8-jdk and python3 ####
 RUN apt-get update && \
 		apt-get install -y --no-install-recommends \
+      vim \
+      lv \
 			git \
 			patch \
 			openjdk-8-jdk \
@@ -66,7 +68,7 @@ ADD portal.properties $PORTAL_HOME/src/main/resources/portal.properties
 
 WORKDIR $PORTAL_HOME
 
-RUN mvn -DskipTests clean install
+RUN mvn -DskipTests -Dauthenticate=noauthsessionservice clean install
 RUN cp $PORTAL_HOME/portal/target/cbioportal.war $CATALINA_HOME/webapps/cbioportal.war
 
 # Setup Tomcat
