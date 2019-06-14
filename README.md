@@ -4,6 +4,7 @@ A standalone Docker cantainer running the cBioPortal for Cancer Genomics (http:/
 
 ## Summary
 The image based on mysql:5 and tomcat:9-jre11 with using docker-composer. the MySQL data is stored on Docker volume on local host so the data is not removed when the Docker container is stopped.
+Also support 'session' service for group comparison (from cbioportal v3.0.0).
 
 ## Requirement
 
@@ -14,6 +15,10 @@ The image based on mysql:5 and tomcat:9-jre11 with using docker-composer. the My
 
     docker-compose up
 
+## Stop
+
+		docker-compose down
+
 ## Test
 
-URL: http://localhost:8080/cbioportal/
+URL: http://localhost/cbioportal/
