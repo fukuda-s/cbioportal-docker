@@ -16,7 +16,7 @@ Also support 'session' service for group comparison (from cbioportal v3.0.0).
 
 	git clone https://github.com/fukuda-s/docker-cbioportal
 	cd docker-cbioportal
-	git https://github.com/cBioPortal/session-service
+	git clone https://github.com/cBioPortal/session-service
 
 ## Run
 
