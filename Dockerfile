@@ -12,7 +12,7 @@
 #  docker-compose up
 #       (load http://localhost:8080 with your favorite web browser) 
 
-FROM tomcat:9-jre11
+FROM tomcat:9-jdk8
 
 MAINTAINER Shiro FUKUDA
 
@@ -25,7 +25,6 @@ RUN apt-get update && \
       lv \
 			git \
 			patch \
-			openjdk-8-jdk \
 			python3 \
 			python3-dev \
 			python3-pip \
@@ -37,18 +36,16 @@ RUN apt-get update && \
 RUN python3 -m pip install pip setuptools
 RUN python3 -m pip install mysqlclient pyyaml
 
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
-
 # Install Connector/J 8
-RUN curl -L -O https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java_8.0.13-1ubuntu18.10_all.deb && \
-		dpkg -i mysql-connector-java_8.0.13-1ubuntu18.10_all.deb && \
-		cp /usr/share/java/mysql-connector-java-8.0.13.jar $CATALINA_HOME/lib/mysql-connector-java.jar
+RUN curl -L -O https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java_8.0.16-1debian9_all.deb && \
+		dpkg -i mysql-connector-java_8.0.16-1debian9_all.deb && \
+		cp /usr/share/java/mysql-connector-java-8.0.16.jar $CATALINA_HOME/lib/mysql-connector-java.jar
 ENV CONNECTOR_JAR $CATALINA_HOME/lib/mysql-connector-java.jar
 
 # Install Maven 3.6
-RUN curl -L -O http://ftp.jaist.ac.jp/pub/apache/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.tar.gz && \
-		cd /usr/local && tar xzf /root/apache-maven-3.6.0-bin.tar.gz && \
-		ln -s /usr/local/apache-maven-3.6.0 /usr/local/maven
+RUN curl -L -O http://ftp.jaist.ac.jp/pub/apache/maven/maven-3/3.6.1/binaries/apache-maven-3.6.1-bin.tar.gz && \
+		cd /usr/local && tar xzf /root/apache-maven-3.6.1-bin.tar.gz && \
+		ln -s /usr/local/apache-maven-3.6.1 /usr/local/maven
 ENV PATH $PATH:/usr/local/maven/bin
 
 # REQUIRED: Register the jdbc connector for cbioportal 
