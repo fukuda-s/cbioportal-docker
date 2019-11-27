@@ -1,4 +1,4 @@
-# docker-cbioportal
+# cbioportal-docker
 
 A standalone Docker cantainer running the cBioPortal for Cancer Genomics (http://www.cbioportal.org/).
 
