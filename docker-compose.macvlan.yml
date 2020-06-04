@@ -1,0 +1,121 @@
+version: '2.1'
+
+volumes:
+  cbio-initdb:
+    driver: local
+  mysql_data:
+    driver: local
+
+networks:
+  cbio-net:
+    name: cbio-net
+    driver: macvlan
+    driver_opts:
+      parent: enp67s0
+    ipam:
+      config:
+        - subnet: 192.168.0.0/16
+          gateway: 192.168.222.222
+
+services:
+  cbio-initdb:
+    container_name: cbio-initdb
+    image: busybox
+    command: /bin/ash -c "
+               if [ ! -f /root/initdb/00_cgds.sql ]; then
+                 wget --no-check-certificate -O /root/initdb/00_cgds.sql https://raw.githubusercontent.com/cBioPortal/cbioportal/v3.0.0/db-scripts/src/main/resources/cgds.sql;
+               fi &&
+               if [ ! -f /root/initdb/01_seed-cbioportal_hg19_v2.7.3.sql.gz ]; then
+                 wget --no-check-certificate -O /root/initdb/01_seed-cbioportal_hg19_v2.7.3.sql.gz https://github.com/cBioPortal/datahub/raw/master/seedDB/seed-cbioportal_hg19_v2.7.3.sql.gz;
+               fi"
+    volumes:
+      - "cbio-initdb:/root/initdb"
+    networks:
+      cbio-net:
+        ipv4_address: 192.168.8.201
+#   environment:
+      # VLAN: 20
+
+  cbio-DB:
+    container_name: cbio-DB
+    image: mysql:5
+    command: --explicit_defaults_for_timestamp=1
+    volumes:
+      - "mysql_data:/var/lib/mysql"
+      - "cbio-initdb:/docker-entrypoint-initdb.d"
+    environment:
+      MYSQL_DATABASE: cbioportal
+      MYSQL_ROOT_PASSWORD: genome123
+      MYSQL_USER: cbio_user
+      MYSQL_PASSWORD: cbio123
+      TZ: "Asia/Tokyo"
+      VLAN: 20
+    ports:
+      - "3306:3306"
+    depends_on:
+      - "cbio-initdb"
+    restart: always
+    networks:
+      cbio-net:
+        ipv4_address: 192.168.8.202
+
+  cbioportal:
+    container_name: cbioportal
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        buildno: 1
+    image: cbioportal
+    volumes:
+      - "./data:/root/data"
+    environment:
+      TZ: "Asia/Tokyo"
+      # VLAN: 20
+    ports:
+      - "80:8080"
+    depends_on:
+      - "cbio-initdb"
+      - "cbio-DB"
+    restart: always
+    networks:
+      cbio-net:
+        ipv4_address: 192.168.8.200
+
+  session-service:
+    container_name: session-service
+    build:
+      context: ./session-service
+      dockerfile: Dockerfile
+      args:
+        buildno: 1
+    ports:
+      - "8090:8080"
+    environment:
+      TZ: "Asia/Tokyo"
+      JAVA_OPTS: "-Dspring.data.mongodb.uri=mongodb://session-DB:27017/session-service"
+      # with user/pass enabled:
+      # JAVA_OPTS: "-Dspring.data.mongodb.uri=mongodb://sesssion-DB:27017/session-service -Dsecurity.basic.enabled=true -Dsecurity.user.name=user -Dsecurity.user.password=pass"
+      # VLAN: 20
+    depends_on:
+      - session-DB
+    networks:
+      cbio-net:
+        ipv4_address: 192.168.8.204
+
+  session-DB:
+    container_name: session-DB
+    image: mongo:3.6.6
+    restart: always
+    # this makes mongo use smaller default size limits:
+    # https://docs.mongodb.com/manual/reference/program/mongod/#cmdoption-mongod-smallfiles
+    command: --smallfiles
+    # uncomment this to expose the db port on localhost
+    # ports:
+    #   - "27017:27017"
+    environment:
+      TZ: "Asia/Tokyo"
+      # VLAN: 20
+    networks:
+      cbio-net:
+        ipv4_address: 192.168.8.205
