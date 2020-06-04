@@ -43,9 +43,9 @@ RUN curl -L -O https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-j
 ENV CONNECTOR_JAR $CATALINA_HOME/lib/mysql-connector-java.jar
 
 # Install Maven 3.6
-RUN curl -L -O http://ftp.jaist.ac.jp/pub/apache/maven/maven-3/3.6.1/binaries/apache-maven-3.6.1-bin.tar.gz && \
-		cd /usr/local && tar xzf /root/apache-maven-3.6.1-bin.tar.gz && \
-		ln -s /usr/local/apache-maven-3.6.1 /usr/local/maven
+RUN curl -L -O http://ftp.jaist.ac.jp/pub/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz && \
+		cd /usr/local && tar xzf /root/apache-maven-3.6.3-bin.tar.gz && \
+		ln -s /usr/local/apache-maven-3.6.3 /usr/local/maven
 ENV PATH $PATH:/usr/local/maven/bin
 
 # REQUIRED: Register the jdbc connector for cbioportal 
